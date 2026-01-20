@@ -88,7 +88,7 @@
                                                 |                           |
                                                 v                           v
                                     +----------------------+   +----------------------+
-                                    | Show menu again     |   | Close DB connection  |
+                                    | Show menu again      |   | Close DB connection  |
                                     +----------------------+   +----------+-----------+
                                                                            |
                                                                            v
