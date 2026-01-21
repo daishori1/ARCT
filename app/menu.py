@@ -12,5 +12,3 @@ def menu(arr=None):
             print("please put a valid character \n this field must be a interger (1-5)")      
                 
 print(menu())
-
-
