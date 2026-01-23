@@ -55,7 +55,12 @@ def list_students():
         conditions.append("name = %s")
         params.append(name_value)
     elif choices == 2:
-        score_value = int(input("enter the score"))
+        while True:
+            try:
+                score_value = int(input("enter the score"))
+                break
+            except ValueError:
+                print("invalid input ,please enter a number ")
         conditions.append("score = %s")
         params.append(score_value)
     elif choices == 3 :
@@ -87,5 +92,44 @@ def list_students():
 
 
 
+def add_student():
+    conn = get_connection()
+    cur = conn.cursor()
+    params = []
+    query = "INSERT INTO studentscores (name , score , status) values (%s , %s , %s )"
+
+    name_value = input("give the name of the student")
+    params.append(name_value)
+    while True:
+        try:
+            score_value = int(input("give me the score of the student"))
+            break
+        except ValueError:
+            print("this field must be a number")
+    params.append(score_value)
+    if score_value >= 90 :
+        status_value = "Excelencia"
+        params.append(status_value)
+    elif score_value >= 70  :
+        status_value = "promedio"
+        params.append(status_value)
+    elif score_value >= 60 and score_value <= 69:
+        status_value = "recursar"
+        params.append(status_value)
+    else :
+        status_value = "sin derecho a examen"
+        params.append(status_value)
+    
+    cur.execute(query,params)
+    conn.commit()
+    cur.close()
+    conn.close()
 
 
+def update_score():
+    conn = get_connection()
+    cur = conn.cursor()
+
+def delete_student():
+    conn = get_connection()
+    cur = conn.cursor()
