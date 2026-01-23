@@ -1,9 +1,9 @@
 def menu():
     print("""Please select an option:
-  1) Add student score
-  2) List all scores
+  1) Add student 
+  2) List all students
   3) Update score
-  4) Delete score
+  4) Delete student
   5) Exit
 """)
     valid_option = {1,2,3,4,5}     
