@@ -14,14 +14,16 @@ def get_connection():
         dbname = os.getenv("PGDATABASE"),
         sslmode = "require"
  )
-    #read the credentials whit a alias for dont expose the real credentials
-
+    #read the credentials whit a alias for don't expose the real credentials
+#def for list all students 
 def list_students():
     conn = get_connection()
     cur = conn.cursor()
     sql = "SELECT * FROM studentscores"
     params = []
     conditions = []
+    #params and condition save the options for build the sql sentence
+    #we have 4 options filter by id , name , score , status and call the entery db
     print("""Please select an option:
     0) filter by id
     1) filter by name
@@ -37,10 +39,10 @@ def list_students():
             if choices not in choice:
                 print("answer out of range please try again : ")
             else :
-                  print(choices)
+                  print("your choice the option number ",choices)
                   break
         except ValueError :
-             print("invalif input\n this field must be a interger (1-5)") 
+             print("invalif input\n this field must be a interger (0-4)") 
 
     if choices == 0:
         while True:
@@ -49,6 +51,7 @@ def list_students():
                 break
             except ValueError:
                 print("Invalid input. Please enter a number :  ")
+                #use a place holders %S to above the sql injection 
         conditions.append("id = %s")
         params.append(id_value)
     elif choices == 1:
@@ -71,7 +74,7 @@ def list_students():
     elif choices == 4 :
          pass 
                     
-            
+         
     if conditions:
         sql += " WHERE " + " AND ".join(conditions)
     if params:
@@ -96,15 +99,25 @@ def add_student():
     cur = conn.cursor()
     params = []
     query = "INSERT INTO studentscores (name , score , status) values (%s , %s , %s )"
-
-    name_value = input("give the name of the student : ")
+    while True:
+        try: 
+            name_value = input("give the name of the student : ").strip()
+            if name_value == "" or any(char.isdigit() for char in name_value) or len(name_value) <= 3:
+                raise ValueError("please enter the valid input for name")
+            print("name acepted the name of the student is : ",name_value)
+            break
+        except ValueError as e :
+            print("please enter the valid input for name")
     params.append(name_value)
     while True:
         try:
             score_value = int(input("give me the score of the student : "))
+            if score_value > 100 or score_value < 0 : 
+                raise ValueError("this field must be a number or number bettwen (1-100) : ")
+            print("score add properly the score of the student is : ", score_value)
             break
         except ValueError:
-            print("this field must be a number : ")
+            print("this field must be a number or number bettwen (1-100) : ")
     params.append(score_value)
     if score_value >= 90 :
         status_value = "Excellence"
@@ -133,17 +146,20 @@ def update_score():
     cur = conn.cursor()
     query = "UPDATE studentscores SET score = %s, status = %s WHERE id = %s"
     
-    # 1. ask for the id of student 
+    #  ask for the id of student 
     while True:
         try :
             student_id = int(input("give me the id of the student : "))
             break
         except ValueError :
             print("this field must be a interger ,please try again : ")
-    # 2. ask for the new score 
+    # ask for the new score 
     while True:
         try : 
             new_score = int(input("give me the new score for the student : "))
+            if new_score > 100 or new_score < 0:
+                raise ValueError ("this field must be a interger in value of (1-100)please try again : ")
+            print("the new score has been added succefully the new score is " , new_score)
             break
         except ValueError:
             print("this field must be a interger in value of (1-100)please try again : ")
@@ -197,7 +213,7 @@ def delete_student():
             if choises not in choice:
                 print("answer out of range please try again :")
             else :
-               print(choice)
+               print("you has been selected the option : ",choises)
                break
         except ValueError:
             print("please put a valid int (0-1) : ")

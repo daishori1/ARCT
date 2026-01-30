@@ -1,3 +1,4 @@
+#firts test to get the data from the DB
 from db import get_connection
 
 def list_students():
