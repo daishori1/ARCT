@@ -1,17 +1,17 @@
-require('dotenv').config('ARCT/.env');
-const {Pool} = require('pg');
+const express = require('express').config(); 
+require('nodemon').config();
+const app =  express();
 
-const pool = new Pool({
-  user : process.env.PGUSER,
-  port : Number(process.env.PGPORT || 14152) ,
-  host : process.env.PGHOST,
-  database : process.env.PGDBNAME,
-  password : process.env.PGPASSWORD, 
 
-  ssl : {
-    rejectUnauthorized : false ,  
-  }
-});
+app.listen(3000 , ()=> {
+  console.log(' server is runing on http://localhost:3000')
+})
+
+
+
+
+
+
 
 
 
