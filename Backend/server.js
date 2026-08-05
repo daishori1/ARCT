@@ -11,9 +11,18 @@ const app =  express();
 
 
 app.get("/students" ,async (req,res)=> {
-   console.log('server alive')
-   const {rows}  = await pool.query('SELECT * FROM public.students;');
-   res.json(rows);
+   try {
+    const {rows}  = await pool.query('SELECT * FROM public.students;');
+    
+    if (rows.length === 0){
+      res.status(400).send({error:"no data in the treaht"});
+      return 
+    }
+    res.status(200).json(rows); 
+  }catch(error){
+     res.status(500).send({error:"internal server error"});
+  }
+     
 });
 
 
